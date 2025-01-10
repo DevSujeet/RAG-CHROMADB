@@ -82,6 +82,8 @@ We’ll implement the system step by step:
     Answer generation: Connect the LLM and generate answers.
     FastAPI integration: Build endpoints for the system.
 
+## document source
+    https://www.arthistoryproject.com/timeline/the-ancient-world/classical-india/the-ramayana/the-ramayana-book-1-bala-kanda-chapter-1/
 ## PIP installs
 
     pip install pdf2image pytesseract PyPDF2 transformers nltk pillow torch

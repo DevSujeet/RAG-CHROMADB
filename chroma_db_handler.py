@@ -1,3 +1,5 @@
+import hashlib
+
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
@@ -36,7 +38,7 @@ class ChromaDBHandler:
         """
         return self.embedding_model.encode(chunks, convert_to_numpy=True).tolist()
 
-    def store_chunks(self, chunks: List[str], source_document: str):
+    def store_chunks_unprotected(self, chunks: List[str], source_document: str):
         """
         Store text chunks and their embeddings in ChromaDB.
         :param chunks: List of text chunks.
@@ -78,3 +80,44 @@ class ChromaDBHandler:
             for doc, meta in zip(results["documents"][0], results["metadatas"][0])
         ]
 
+    def hash_chunk(self, chunk: str) -> str:
+        """
+        Generate a unique hash for a text chunk.
+        :param chunk: Text chunk to hash.
+        :return: Hash string.
+        """
+        return hashlib.md5(chunk.encode("utf-8")).hexdigest()
+
+    def store_chunks_protected(self, chunks: List[str], source_document: str):
+        """
+        Store unique text chunks and their embeddings in ChromaDB.
+        :param chunks: List of text chunks.
+        :param source_document: Identifier for the source document.
+        """
+        # Generate embeddings for the chunks
+        embeddings = self.generate_embeddings(chunks)
+
+        for idx, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+            # Generate a hash for the chunk
+            chunk_hash = self.hash_chunk(chunk)
+
+            # Check if the chunk already exists in the collection
+            existing = self.collection.query(
+                query_texts=[chunk],
+                n_results=1
+            )
+
+            if existing["documents"]:
+                # Skip storing if a matching document already exists
+                print(f"Skipping duplicate chunk: {chunk[:30]}... (hash: {chunk_hash})")
+                continue
+
+            # Add the chunk to the database
+            metadata = {"source_document": source_document, "chunk_index": idx, "hash": chunk_hash}
+            self.collection.add(
+                documents=[chunk],
+                metadatas=[metadata],
+                ids=[chunk_hash],  # Use the hash as the unique ID
+                embeddings=[embedding],
+            )
+            print(f"Stored chunk: {chunk[:30]}... (hash: {chunk_hash})")

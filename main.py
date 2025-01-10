@@ -59,7 +59,7 @@ if __name__ == '__main__':
         for i, chunk in enumerate(chunks, 1):
             print(f"Chunk {i}:\n{chunk}\n")
         # store the chunk in chromaDB
-        chroma_handler.store_chunks(chunks=chunks, source_document=file_name)
+        chroma_handler.store_chunks_protected(chunks=chunks, source_document=file_name)
 
         # chroma_handler = ChromaDBHandler()
         # Example query
