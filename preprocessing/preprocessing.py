@@ -58,7 +58,7 @@ def chunk_text_hf(tokens: List[str], max_tokens: int = 500) -> List[str]:
     return chunks
 
 
-def preprocess_text_hf(tokenizer, raw_text: str, max_tokens: int = 500) -> List[str]:
+def preprocess_text_hf(tokenizer, raw_text: str, max_tokens: int = 256) -> List[str]:
     """Full preprocessing pipeline: clean, tokenize, and chunk using Hugging Face."""
     cleaned_text = clean_text(raw_text)
     tokens = tokenize_text_with_hf(cleaned_text=cleaned_text, tokenizer=tokenizer)

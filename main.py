@@ -50,7 +50,7 @@ if __name__ == '__main__':
         file_name = "ramayan-book-1-chap-1.pdf"
         pdf_path = f"documents/{file_name}"  # Replace with your PDF path
         use_ocr = False  # Set to True for scanned PDFs
-        max_tokens = 500  # Adjust based on your LLM's token limit
+        max_tokens = 256  # Adjust based on your LLM's token limit
 
         # Process the PDF
         chunks = await process_pdf(tokenizer, pdf_path, use_ocr, max_tokens)

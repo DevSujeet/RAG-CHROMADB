@@ -17,11 +17,15 @@ class ChromaDBHandler:
         self.collection_name = "document_chunks"
 
         # Check if the collection exists, otherwise create it
-        collection = self.client.get_collection(self.collection_name)
-        if collection.name == self.collection_name:
-            self.collection = collection
-        else:
-            self.collection = self.client.create_collection(self.collection_name)
+        # Create or get the collection
+        try:
+            self.collection = self.client.create_collection(
+                name=self.collection_name,
+                get_or_create=True
+            )
+        except ValueError as e:
+            print(f"Error creating or accessing the collection: {e}")
+            raise
 
 
     def generate_embeddings(self, chunks: List[str]) -> List[List[float]]:
