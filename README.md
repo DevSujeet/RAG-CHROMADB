@@ -1,3 +1,12 @@
+## setting this project
+using Uv as python package manager.
+$ uv venv
+$ source .venv/bin/activate
+$ uv pip install -r requirement.txt
+ 
+#env file content
+OPENAI_API_KEY="secert key from open-ai"
+
 ## 1. Problem Analysis and Planning
 
     Goal: Enable users to ask questions based on the contents of a collection of PDF files and get accurate responses.

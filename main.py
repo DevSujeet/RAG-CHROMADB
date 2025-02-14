@@ -7,6 +7,7 @@
 import asyncio
 
 from chroma_db_handler import ChromaDBHandler
+from llm_caller.open_ai_caller import ask_llm
 from pdf_reader.pdf_reader_async import extract_text_combined
 from preprocessing.preprocessing import preprocess_text_hf
 
@@ -66,12 +67,13 @@ if __name__ == '__main__':
         query = "who was Valmiki before he became a sage? "
         top_k = 3
 
-        # Query ChromaDB
-        results = chroma_handler.query_chunks(query, top_k=top_k)
-        for i, result in enumerate(results, 1):
-            print(f"Result {i}:")
-            print(f"Document: {result['document']}")
-            print(f"Metadata: {result['metadata']}\n")
+        # Query ChromaDB and create a prompt
+        prompt = chroma_handler.construct_prompt(query, top_k)
+
+        # Call the LLM with the prompt
+        response = await ask_llm(prompt)
+        print(f"\nuser query: {query}\n")
+        print(f"Response from LLM:\n{response}")
 
 
     asyncio.run(main())

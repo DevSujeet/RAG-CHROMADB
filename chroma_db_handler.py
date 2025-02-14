@@ -121,3 +121,11 @@ class ChromaDBHandler:
                 embeddings=[embedding],
             )
             print(f"Stored chunk: {chunk[:30]}... (hash: {chunk_hash})")
+
+    def construct_prompt(self, query: str, top_k: int = 5) -> str:
+            """
+            Construct a prompt for the LLM using the query and retrieved chunks.
+            """
+            results = self.query_chunks(query, top_k=top_k)
+            context = "\n".join([result["document"] for result in results])
+            return f"Context:\n{context}\n\nQuestion: {query}\nAnswer:"
