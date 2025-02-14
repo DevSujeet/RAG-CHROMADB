@@ -1,8 +1,8 @@
 ## setting this project
-using Uv as python package manager.
-$ uv venv
-$ source .venv/bin/activate
-$ uv pip install -r requirement.txt
+    using Uv as python package manager.
+    $ uv venv
+    $ source .venv/bin/activate
+    $ uv pip install -r requirement.txt
  
 #env file content
 OPENAI_API_KEY="secert key from open-ai"
