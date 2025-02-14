@@ -5,7 +5,7 @@
     $ uv pip install -r requirement.txt
  
 #env file content
-OPENAI_API_KEY="secert key from open-ai"
+    OPENAI_API_KEY="secert key from open-ai"
 
 ## 1. Problem Analysis and Planning
 
